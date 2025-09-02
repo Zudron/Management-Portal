@@ -151,17 +151,3 @@ bun drizzle-kit push
 * **Project** → Initiative with timeline + budget.
 * **Assignment** → Link between staff and projects.
 * **Graph Node** → Staff or Project represented visually.
-
----
-
-## 📌 Notes
-
-* Prototype → focus is **speed + working features** over polish.
-* Staff graph is the **centerpiece**.
-* System is **admin-only** until future roles are added.
-
----
-
-✅ This README is now aligned with your updated **SRS** — streamlined, staff-focused, admin-only, and graph-first.
-
-Do you also want me to create a **starter folder structure** + `package.json` draft (with Bun + Qwik + Hono + Drizzle prewired) so your devs can jump in right away?
