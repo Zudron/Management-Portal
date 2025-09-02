@@ -1,2 +1,2 @@
 # Management-Portal
-a read-only, admin-focused visualization hub for organizational project and resource oversight.
+a scalable, admin-focused ERP visualization hub for organizational project and resource oversight.
