@@ -1,191 +1,242 @@
-# **Software Requirements Specification (SRS)**
+# Software Requirements Specification (SRS)
 
 **Project Name:** OrgVision Dashboard
-**Version:** 1.0
+**Document Version:** 1.0
+**Prepared For:** \[Organization Name]
+**Prepared By:** \[Development Team / Vendor]
 **Date:** 02 September 2025
-**Prepared By:** \[Dev Team]
 
 ---
 
-## **1. Introduction**
+## 1. Introduction
 
-### **1.1 Purpose**
+### 1.1 Purpose
 
-OrgVision Dashboard is a lightweight, admin-only web application for managing organizational projects, people, and budgets. It provides **full CRUD control** (create, update, delete) for projects and people, and visualizes relationships in a **graph view** where people and projects appear as connected nodes.
+The purpose of this SRS is to define requirements for **OrgVision Dashboard**, a centralized admin-only platform for managing projects, budgets, and staff. Unlike a passive read-only tool, this system allows **full control**: admins can create, update, or remove projects and staff, manage roles, and track financials.
 
-### **1.2 Intended Audience**
+The system’s **core visualization** is a **graph view of staff** (nodes) linked to their associated projects, roles, and budgets.
 
-* **Admin Users (only)**: single login, full control.
-* **Developers**: to implement and iterate rapidly.
+### 1.2 Document Conventions
 
-### **1.3 Scope**
+* Requirements are labeled as **FR-x.y.z** (Functional Requirement) or **NFR-x.y.z** (Non-Functional Requirement).
+* Terminology:
 
-* Single **admin interface** (no multiple roles, no user segregation).
-* Features:
+  * **Staff** = any individual in the organization (internal, contract, freelance, temporary).
+  * **Project** = a defined organizational initiative with timeline, staff, and budget.
 
-  * Manage Projects (create, update, delete).
-  * Manage People (create, update, promote/change role, delete).
-  * Assign/remove people to/from projects.
-  * Track stipends/budgets.
-  * **Graph visualization**: people ↔ projects as nodes with relationships.
+### 1.3 Intended Audience
 
-### **1.4 Document Overview**
+* **Admin Users** (single role for prototype).
+* Development team building the system.
+* Organizational sponsors and stakeholders validating scope.
 
-This SRS defines a **prototype-first approach**. Heavy compliance or enterprise formalities are excluded to prioritize **fast delivery**.
+### 1.4 Scope
 
----
+The OrgVision Dashboard provides:
 
-## **2. Overall Description**
+* **Staff management**: add, edit, remove staff records (name, role, type, stipend, assignment).
+* **Project management**: add, edit, remove projects with timelines, budgets, staff assignments.
+* **Graph visualization**: interactive staff network view showing relationships across projects.
+* **Budget oversight**: track allocations and spending per project and staff.
+* **Admin-only access**: no other user roles in v1.0.
 
-### **2.1 Product Perspective**
+### 1.5 Overview of the Document
 
-* Web app: Qwik (frontend), Hono+Bun (backend), Turso (DB).
-* Admin-only login.
-* Graph-first visualization (force-directed layout).
+This document details:
 
-### **2.2 Product Functions**
-
-* **People CRUD**: add, update, remove, promote.
-* **Project CRUD**: add, update, remove.
-* **Assignment Management**: connect/disconnect person ↔ project.
-* **Budget Management**: edit project budgets, assign stipends.
-* **Visualization**: graph view of all relationships.
-
-### **2.3 User Classes**
-
-* **Admin**: single class, full control.
-
-### **2.4 Operating Environment**
-
-* Runs on web browser (desktop-first, responsive).
-* Hosted on Cloudflare Pages + Workers.
-
-### **2.5 Constraints**
-
-* Prototype focus: **speed > completeness**.
-* No multi-role auth; single admin login.
-* Edge-friendly DB (Turso) → must handle sync across nodes.
-
-### **2.6 Assumptions**
-
-* Admin knows organization context.
-* Minimal user training required.
+* Functional and non-functional requirements.
+* Data entities and schemas.
+* System features with focus on **graph view**.
+* Assumptions and constraints for a rapid prototype.
 
 ---
 
-## **3. System Features**
+## 2. Overall Description
 
-### **3.1 People Management**
+### 2.1 Product Perspective
 
-* Add new person (name, role, type, stipend, start/end).
-* Update person details (promotion, role change).
-* Delete/remove person.
-* Assign person to projects.
+The OrgVision Dashboard is a **standalone prototype** web application, built with modern edge-ready technologies for speed and developer experience.
 
-### **3.2 Project Management**
+#### 2.1.1 System Interfaces
 
-* Add new project (name, description, budget, duration).
-* Update project (budget changes, timeline changes).
-* Delete project.
+* **Data Sources**: Local SQLite (Turso distributed later).
+* **APIs**: CRUD APIs for Staff, Projects, Budgets.
 
-### **3.3 Assignment & Roles**
+#### 2.1.2 External Dependencies
 
-* Connect/disconnect people ↔ projects.
-* Update roles within a project.
+* Hosting: Cloudflare Pages + Workers.
+* Authentication: Simple Admin login (JWT/Static token).
 
-### **3.4 Budget & Finance**
+### 2.2 Product Functions
 
-* Update project budgets.
-* Assign stipends.
-* View budget vs. spend at a glance.
+* Manage staff (CRUD).
+* Manage projects (CRUD).
+* Assign/remove staff from projects.
+* Track stipends and budgets.
+* View staff-project relationships in **graph visualization**.
 
-### **3.5 Graph Visualization**
+### 2.3 User Classes and Characteristics
 
-* Force-directed node graph:
+* **Admin**: Has complete control over projects and staff.
 
-  * Projects = large nodes.
-  * People = smaller nodes.
-  * Edges = assignments (person ↔ project).
-* Interactive features:
+### 2.4 Operating Environment
 
-  * Click node = show details in sidebar.
-  * Hover = highlight connected nodes.
-  * Search/filter = highlight matching nodes.
+* Web app (desktop-first).
+* Runs on modern browsers.
 
----
+### 2.5 Design and Implementation Constraints
 
-## **4. External Interface Requirements**
+* Prototype focus: minimal polish, maximum functionality.
+* One role only (Admin).
 
-### **4.1 User Interface**
+### 2.6 Assumptions and Dependencies
 
-* Single-page dashboard with:
-
-  * **Sidebar navigation** (Projects, People, Graph).
-  * **Main Graph View** (default landing page).
-  * **Detail panel** (shows project/person details).
-
-### **4.2 Software Interfaces**
-
-* Backend API (Hono, Bun).
-* Database: Turso (SQLite, edge-distributed).
-* ORM: Drizzle ORM.
-* Graph rendering: Visx/D3.js in Qwik.
-
-### **4.3 Authentication**
-
-* Single admin login (static credentials or simple SSO).
+* Only Admin view required in v1.0.
+* Staff data primarily entered manually.
 
 ---
 
-## **5. Non-Functional Requirements**
+## 3. System Features and Requirements
 
-### **5.1 Performance**
+### 3.1 Staff Management
 
-* Graph renders < 2s for up to 500 nodes.
+* **FR-3.1.1** Add staff (name, role, type: full-time, contract, freelance, stipend).
+* **FR-3.1.2** Edit staff details.
+* **FR-3.1.3** Remove staff.
+* **FR-3.1.4** Promote/change role of staff.
 
-### **5.2 Security**
+### 3.2 Project Management
 
-* HTTPS enforced.
-* Admin-only access.
+* **FR-3.2.1** Add projects (name, description, start/end, budget).
+* **FR-3.2.2** Edit project metadata.
+* **FR-3.2.3** Remove projects.
+* **FR-3.2.4** Assign/remove staff to/from projects.
 
-### **5.3 Usability**
+### 3.3 Graph View (Core Feature)
 
-* Minimalist UI.
-* Graph is intuitive, clickable, zoomable.
+* **FR-3.3.1** Display all staff as nodes.
+* **FR-3.3.2** Show edges between staff and projects.
+* **FR-3.3.3** Hover/select node to highlight related projects/staff.
+* **FR-3.3.4** Filter graph by project, role, or staff type.
 
----
+### 3.4 Budget Oversight
 
-## **6. Data Requirements**
+* **FR-3.4.1** Display project budget vs spend.
+* **FR-3.4.2** Display staff stipend totals.
+* **FR-3.4.3** Highlight budget overruns.
 
-### **6.1 Entities**
+### 3.5 Navigation & Usability
 
-* **Project**: ID, Name, Description, Budget, Duration.
-* **Person**: ID, Name, Role, Type, Stipend, Start/End.
-* **Assignment**: Person ↔ Project, Role in project.
-
----
-
-## **7. System Models**
-
-### **7.1 Graph Model**
-
-* Nodes = People + Projects.
-* Edges = Assignments.
-* Force-directed layout.
-
----
-
-## **8. Other Requirements**
-
-* Prototype-first (deliver visible working system fast).
-* No multi-role expansion in prototype.
+* **FR-3.5.1** Single-page admin dashboard.
+* **FR-3.5.2** Sidebar navigation: Staff, Projects, Graph, Budgets.
+* **FR-3.5.3** Consistent color-coding (status, roles).
 
 ---
 
-## **Appendices**
+## 4. External Interface Requirements
 
-### **A. Mock Graph Example**
+### 4.1 User Interfaces
 
-* Project A connected to 3 People nodes.
-* Person X connected to 2 Projects.
+* Desktop-first, responsive layout.
+* Graph view as centerpiece.
+* Tables for staff and projects.
 
+### 4.2 Hardware Interfaces
+
+* None (web only).
+
+### 4.3 Software Interfaces
+
+* SQLite (Turso later).
+* Authentication: simple admin login (JWT).
+
+### 4.4 Communication Interfaces
+
+* HTTPS/TLS.
+
+---
+
+## 5. Non-Functional Requirements
+
+### 5.1 Performance
+
+* NFR-5.1.1: Graph renders <2s for up to 500 staff.
+
+### 5.2 Security
+
+* NFR-5.2.1: Admin-only authentication.
+* NFR-5.2.2: No public access.
+
+### 5.3 Reliability
+
+* NFR-5.3.1: Graceful error handling if DB sync fails.
+
+### 5.4 Usability
+
+* NFR-5.4.1: No training required.
+
+### 5.5 Maintainability
+
+* NFR-5.5.1: Modular components for staff, projects, graph.
+
+---
+
+## 6. Data Requirements
+
+### 6.1 Entities
+
+* **Staff**: ID, Name, Role, Type (full-time/contract/freelance), Start/End, Stipend.
+* **Project**: ID, Name, Description, Start/End, Budget, Spend.
+* **Assignment**: StaffID ↔ ProjectID, Role, Duration.
+
+### 6.2 Data Sources
+
+* SQLite (prototype), Turso later.
+
+### 6.3 Schema
+
+* ERD: Staff ↔ Projects via Assignments.
+
+### 6.4 Validation
+
+* Required: staff name, project name, budget.
+* Dates must be valid ISO format.
+
+---
+
+## 7. System Models
+
+### 7.1 Use Cases
+
+* Admin adds staff.
+* Admin assigns staff to projects.
+* Admin views staff graph.
+
+### 7.2 User Flow
+
+* Login → Dashboard → Staff/Projects → Graph.
+
+---
+
+## 8. Other Requirements
+
+### 8.1 Legal/Compliance
+
+* Staff data internal only.
+
+### 8.2 Deployment
+
+* Cloudflare Pages + Workers.
+* SQLite local → Turso remote later.
+
+### 8.3 Documentation
+
+* Admin quick start guide.
+
+---
+
+## Appendices
+
+* Glossary: Staff, Project, Assignment, Budget, Node.
+* Sample data: JSON/CSV example staff + projects.
+* Mockups: Graph with staff nodes, linked projects.
