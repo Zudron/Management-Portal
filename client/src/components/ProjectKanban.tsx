@@ -43,23 +43,32 @@ export default function ProjectKanban({ projectName, columns: initialColumns }: 
   };
 
   const handleDragEnd = (result: DropResult) => {
+    console.log('Drag ended with result:', result);
+    
     const { destination, source, draggableId } = result;
 
+    // If no destination, the item was dropped outside a droppable area
     if (!destination) {
+      console.log('No destination found - dropped outside droppable area');
       return;
     }
 
+    // If dropped in the same position, no change needed
     if (
       destination.droppableId === source.droppableId &&
       destination.index === source.index
     ) {
+      console.log('Item dropped in same position');
       return;
     }
 
     const start = columns.find(col => col.id === source.droppableId);
     const finish = columns.find(col => col.id === destination.droppableId);
 
-    if (!start || !finish) return;
+    if (!start || !finish) {
+      console.error('Could not find start or finish column');
+      return;
+    }
 
     if (start === finish) {
       // Reordering within the same column
@@ -77,7 +86,7 @@ export default function ProjectKanban({ projectName, columns: initialColumns }: 
       );
 
       setColumns(newColumns);
-      console.log(`Task ${draggableId} reordered in ${start.id}`);
+      console.log(`✅ Task ${draggableId} reordered in ${start.id}`);
     } else {
       // Moving to a different column
       const startTasks = Array.from(start.tasks);
@@ -101,7 +110,7 @@ export default function ProjectKanban({ projectName, columns: initialColumns }: 
       });
 
       setColumns(newColumns);
-      console.log(`Task ${draggableId} moved from ${start.id} to ${finish.id}`);
+      console.log(`✅ Task ${draggableId} moved from ${start.id} to ${finish.id}`);
     }
   };
 
@@ -132,9 +141,14 @@ export default function ProjectKanban({ projectName, columns: initialColumns }: 
                   <div
                     ref={provided.innerRef}
                     {...provided.droppableProps}
-                    className={`space-y-2 min-h-[200px] rounded-lg p-2 transition-colors ${
-                      snapshot.isDraggingOver ? 'bg-accent/20' : ''
+                    className={`space-y-2 min-h-[300px] rounded-lg p-3 transition-all duration-200 ${
+                      snapshot.isDraggingOver 
+                        ? 'bg-accent/30 border-2 border-accent border-dashed' 
+                        : 'bg-muted/20 border-2 border-transparent'
                     }`}
+                    style={{
+                      minHeight: '300px',
+                    }}
                   >
                     {column.tasks.map((task, index) => (
                       <Draggable key={task.id} draggableId={task.id} index={index}>
@@ -143,10 +157,10 @@ export default function ProjectKanban({ projectName, columns: initialColumns }: 
                             ref={provided.innerRef}
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
-                            className={`cursor-pointer neo-kanban-card ${
-                              snapshot.isDragging ? 'rotate-2 shadow-lg' : ''
+                            className={`neo-kanban-card ${
+                              snapshot.isDragging ? 'shadow-lg z-50' : 'cursor-pointer hover-elevate'
                             }`}
-                            onClick={() => handleTaskClick(task.id)}
+                            onClick={!snapshot.isDragging ? () => handleTaskClick(task.id) : undefined}
                             data-testid={`task-${task.id}`}
                             style={{
                               ...provided.draggableProps.style,
