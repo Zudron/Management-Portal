@@ -23,7 +23,7 @@ export default function DashboardCard({ title, value, change, trend = "neutral",
   };
 
   return (
-    <Card className="hover-elevate" data-testid={`card-${title.toLowerCase().replace(/\s+/g, '-')}`}>
+    <Card className="hover-elevate neo-card" data-testid={`card-${title.toLowerCase().replace(/\s+/g, '-')}`}>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-sm font-medium text-muted-foreground">{title}</CardTitle>
         {icon && <div className="text-muted-foreground">{icon}</div>}

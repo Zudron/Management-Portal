@@ -12,7 +12,7 @@ export default function Finances() {
       date: "Dec 10, 2024",
       description: "Software Engineer Salary - Sarah Chen",
       category: "Salary",
-      amount: 7500,
+      amount: 750000,
       type: "expense" as const,
       account: "Payroll",
       project: "OrgVision Dashboard"
@@ -22,7 +22,7 @@ export default function Finances() {
       date: "Dec 9, 2024",
       description: "Client Payment - Q4 Consulting",
       category: "Revenue",
-      amount: 25000,
+      amount: 2500000,
       type: "income" as const,
       account: "General Fund"
     },
@@ -31,7 +31,7 @@ export default function Finances() {
       date: "Dec 8, 2024", 
       description: "Conference Travel Reimbursement",
       category: "Travel",
-      amount: 1200,
+      amount: 120000,
       type: "expense" as const,
       account: "Operations",
       project: "Team Development"
@@ -41,7 +41,7 @@ export default function Finances() {
       date: "Dec 7, 2024",
       description: "New MacBook Pro for Development",
       category: "Equipment", 
-      amount: 2499,
+      amount: 249900,
       type: "expense" as const,
       account: "Operations",
       project: "OrgVision Dashboard"
@@ -51,7 +51,7 @@ export default function Finances() {
       date: "Dec 6, 2024",
       description: "Google Ads Campaign - Q4",
       category: "Marketing",
-      amount: 850,
+      amount: 85000,
       type: "expense" as const,
       account: "Marketing Fund"
     },
@@ -60,7 +60,7 @@ export default function Finances() {
       date: "Dec 5, 2024",
       description: "Freelancer Payment - UI Design",
       category: "Operations",
-      amount: 3500,
+      amount: 350000,
       type: "expense" as const,
       account: "General Fund",
       project: "Mobile App"
@@ -70,7 +70,7 @@ export default function Finances() {
       date: "Dec 4, 2024",
       description: "Office Rent - December",
       category: "Operations",
-      amount: 4200,
+      amount: 420000,
       type: "expense" as const,
       account: "Operations"
     },
@@ -79,33 +79,33 @@ export default function Finances() {
       date: "Dec 3, 2024",
       description: "Software Licenses - Annual",
       category: "Operations",
-      amount: 1899,
+      amount: 189900,
       type: "expense" as const,
       account: "Operations"
     }
   ];
 
   const monthlyRevenue = [
-    { name: "Jan", value: 45000 },
-    { name: "Feb", value: 52000 },
-    { name: "Mar", value: 48000 },
-    { name: "Apr", value: 61000 },
-    { name: "May", value: 55000 },
-    { name: "Jun", value: 67000 },
-    { name: "Jul", value: 58000 },
-    { name: "Aug", value: 72000 },
-    { name: "Sep", value: 69000 },
-    { name: "Oct", value: 78000 },
-    { name: "Nov", value: 75000 },
-    { name: "Dec", value: 82000 }
+    { name: "Jan", value: 1300000, income: 4500000, expense: 3200000 },
+    { name: "Feb", value: 1400000, income: 5200000, expense: 3800000 },
+    { name: "Mar", value: 1400000, income: 4800000, expense: 3400000 },
+    { name: "Apr", value: 1900000, income: 6100000, expense: 4200000 },
+    { name: "May", value: 1600000, income: 5500000, expense: 3900000 },
+    { name: "Jun", value: 2200000, income: 6700000, expense: 4500000 },
+    { name: "Jul", value: 1700000, income: 5800000, expense: 4100000 },
+    { name: "Aug", value: 2200000, income: 7200000, expense: 5000000 },
+    { name: "Sep", value: 2100000, income: 6900000, expense: 4800000 },
+    { name: "Oct", value: 2400000, income: 7800000, expense: 5400000 },
+    { name: "Nov", value: 2300000, income: 7500000, expense: 5200000 },
+    { name: "Dec", value: 2500000, income: 8200000, expense: 5700000 }
   ];
 
   const expenseCategories = [
-    { name: "Salaries", value: 125000 },
-    { name: "Operations", value: 45000 },
-    { name: "Marketing", value: 32000 },
-    { name: "Travel", value: 18000 },
-    { name: "Equipment", value: 15000 }
+    { name: "Salaries", value: 12500000 },
+    { name: "Operations", value: 4500000 },
+    { name: "Marketing", value: 3200000 },
+    { name: "Travel", value: 1800000 },
+    { name: "Equipment", value: 1500000 }
   ];
 
   const handleAddTransaction = () => {
@@ -139,28 +139,28 @@ export default function Finances() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <DashboardCard
           title="Total Revenue"
-          value="$782,000"
+          value="₹7,82,00,000"
           change="+15.3% from last month"
           trend="up"
           icon={<TrendingUp className="h-4 w-4" />}
         />
         <DashboardCard
           title="Total Expenses"
-          value="$235,000"
+          value="₹2,35,00,000"
           change="+8.1% from last month"
           trend="down"
           icon={<TrendingDown className="h-4 w-4" />}
         />
         <DashboardCard
           title="Net Profit"
-          value="$547,000"
+          value="₹5,47,00,000"
           change="+18.7% from last month"
           trend="up"
           icon={<DollarSign className="h-4 w-4" />}
         />
         <DashboardCard
           title="Burn Rate"
-          value="$58,750/week"
+          value="₹58,75,000/week"
           change="-5.2% optimization"
           trend="up"
           icon={<TrendingDown className="h-4 w-4" />}
@@ -171,8 +171,9 @@ export default function Finances() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
           <FinancialChart
-            title="Monthly Revenue Trend"
-            type="bar"
+            title="Monthly Income vs Expenses"
+            type="scatter"
+            showTimeFilter={true}
             data={monthlyRevenue}
             height={350}
           />
