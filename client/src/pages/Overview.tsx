@@ -11,7 +11,7 @@ export default function Overview() {
       date: "Dec 10, 2024",
       description: "Software Engineer Salary - Sarah Chen",
       category: "Salary",
-      amount: 7500,
+      amount: 750000,
       type: "expense" as const,
       account: "Payroll",
       project: "OrgVision Dashboard"
@@ -21,7 +21,7 @@ export default function Overview() {
       date: "Dec 9, 2024",
       description: "Client Payment - Q4 Consulting",
       category: "Revenue",
-      amount: 25000,
+      amount: 2500000,
       type: "income" as const,
       account: "General Fund"
     },
@@ -30,7 +30,7 @@ export default function Overview() {
       date: "Dec 8, 2024", 
       description: "Conference Travel Reimbursement",
       category: "Travel",
-      amount: 1200,
+      amount: 120000,
       type: "expense" as const,
       account: "Operations",
       project: "Team Development"
@@ -38,20 +38,20 @@ export default function Overview() {
   ];
 
   const monthlyData = [
-    { name: "Jul", value: 45000 },
-    { name: "Aug", value: 52000 },
-    { name: "Sep", value: 48000 },
-    { name: "Oct", value: 61000 },
-    { name: "Nov", value: 55000 },
-    { name: "Dec", value: 67000 }
+    { name: "Jul", value: 1300000, income: 4500000, expense: 3200000 },
+    { name: "Aug", value: 1400000, income: 5200000, expense: 3800000 },
+    { name: "Sep", value: 1400000, income: 4800000, expense: 3400000 },
+    { name: "Oct", value: 1900000, income: 6100000, expense: 4200000 },
+    { name: "Nov", value: 1600000, income: 5500000, expense: 3900000 },
+    { name: "Dec", value: 2200000, income: 6700000, expense: 4500000 }
   ];
 
   const budgetData = [
-    { name: "Salaries", value: 125000 },
-    { name: "Operations", value: 45000 },
-    { name: "Marketing", value: 32000 },
-    { name: "Travel", value: 18000 },
-    { name: "Equipment", value: 15000 }
+    { name: "Salaries", value: 12500000 },
+    { name: "Operations", value: 4500000 },
+    { name: "Marketing", value: 3200000 },
+    { name: "Travel", value: 1800000 },
+    { name: "Equipment", value: 1500000 }
   ];
 
   return (
@@ -66,7 +66,7 @@ export default function Overview() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <DashboardCard
           title="Total Budget"
-          value="$847,420"
+          value="₹84,74,200"
           change="+12.5% from last month"
           trend="up"
           icon={<DollarSign className="h-4 w-4" />}
@@ -97,10 +97,11 @@ export default function Overview() {
       {/* Charts Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <FinancialChart
-          title="Monthly Expenses Trend"
-          type="line"
+          title="Monthly Income vs Expenses"
+          type="scatter"
           data={monthlyData}
           height={300}
+          showTimeFilter={true}
         />
         <FinancialChart
           title="Budget Allocation"
