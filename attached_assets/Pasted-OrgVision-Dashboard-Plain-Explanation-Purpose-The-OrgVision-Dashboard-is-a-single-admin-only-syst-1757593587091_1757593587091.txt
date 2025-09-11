@@ -1,0 +1,151 @@
+OrgVision Dashboard — Plain Explanation
+Purpose
+
+The OrgVision Dashboard is a single admin-only system for running the organization. It is not just a viewer — it lets the admin create, edit, and remove all key information about:
+
+Finances — manage money inflows/outflows, accounts, project budgets, staff payments, and generate reports and charts to see where money goes.
+
+HR (People) — keep a staff directory, view their bios and assignments, and see how they connect to projects and each other in both a network view and an org chart view.
+
+Projects — create and track projects, tasks, timelines, and Kanban boards. Each project can be connected to staff and finances.
+
+The focus is:
+
+Keep it simple and intuitive.
+
+Make it modular (finances, HR, projects are cleanly separated but still connected).
+
+Design with a polished and modern look.
+
+Main Features
+1. Finances
+
+Record every financial movement: income, expenses, stipends, salaries, reimbursements, etc.
+
+Categorize and filter transactions (by project, staff, account, etc.).
+
+Manage accounts (like payroll or general fund).
+
+Compare budgets with actual spending per project.
+
+Visualize finances with summary cards, time-based graphs, and breakdown charts.
+
+2. HR
+
+Add, edit, or remove staff members.
+
+Store details: name, contact, role, type (full-time, contractor, etc.), stipend, manager, dates.
+
+Assign staff to projects (with role, time allocation, etc.).
+
+Visualize relationships in two ways:
+
+Network graph: staff linked to the projects they work on.
+
+Hierarchy chart: reporting structure (manager → staff).
+
+Open a staff profile to see their bio, contact info, projects, and related transactions/tasks.
+
+3. Projects
+
+Add, edit, or delete projects (with name, description, owner, budget, timeline, and status).
+
+Organize project work into tracks (like swimlanes) and tasks (with priority, deadlines, assignees, etc.).
+
+Rearrange tasks by drag-and-drop in a Kanban view.
+
+Add comments to tasks and track dependencies (what task blocks another).
+
+View projects on a timeline (Gantt style) to see scheduling.
+
+Link project budgets to finances for tracking.
+
+Data & Structure
+
+The system connects these areas:
+
+Staff ↔ Projects through assignments.
+
+Projects ↔ Finances through transactions and budgets.
+
+Staff ↔ Finances through stipends and related transactions.
+
+Seed/demo data will include:
+
+At least 6 staff, 4 projects, and sample transactions (salaries, stipends, travel, revenue, etc.).
+
+Non-Functional Goals
+
+Performance: Pages should load quickly, even with ~500 staff.
+
+Security: Only admins can log in and use the system.
+
+Reliability: Data must remain consistent (e.g., no orphan staff without projects).
+
+Ease of use: Minimal training, intuitive navigation, clean UI.
+
+Accessibility: Good contrast, keyboard-friendly.
+
+Maintainability: Features should be modular and easy to extend.
+
+Look & Feel
+
+Modern, minimal, and polished.
+
+Neutral colors, soft shadows, smooth animations.
+
+Clear layouts:
+
+Finances page → KPIs, charts, and transaction tables.
+
+HR page → staff list + interactive graph/org chart + profile drawer.
+
+Projects page → project list, Kanban board, and timeline view.
+
+Testing & Quality
+
+The system will be checked by:
+
+Adding/editing/deleting staff, projects, and transactions to make sure data stays consistent.
+
+Verifying graphs and charts display the right info.
+
+Ensuring tasks can be reordered and project budgets update when money is spent.
+
+Trying with a large dataset (e.g., 500 staff) to confirm performance.
+
+Acceptance Criteria (MVP Success)
+
+The system will be considered complete when:
+
+Admin can log in securely.
+
+All CRUD actions (create, read, update, delete) work for staff, projects, tasks, and finances.
+
+Finances page shows live numbers and charts.
+
+HR page shows staff directory and both graph views.
+
+Projects page supports Kanban drag/drop and timeline view.
+
+Preloaded sample data is available for demo.
+
+A working demo can be deployed and accessed in a browser.
+
+Project Workflow (How to Implement)
+
+Design phase first: make wireframes of the three main pages and polish them into high-fidelity mockups.
+
+Set up data structure: define staff, projects, assignments, tasks, and transactions clearly.
+
+Build backend: implement the logic to store and manage all data and connect it to the UI.
+
+Build frontend skeleton: create pages for finances, HR, and projects with placeholder visuals.
+
+Add visualizations: graphs, charts, Kanban, and timeline.
+
+Polish: refine the interface, add micro-interactions, and improve usability.
+
+Testing: check all main flows (adding staff, moving tasks, creating transactions, etc.).
+
+Deploy: prepare a staging version for demo and feedback.
