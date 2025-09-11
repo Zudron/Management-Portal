@@ -1,0 +1,118 @@
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Calendar, User } from "lucide-react";
+import { useState } from "react";
+
+interface Task {
+  id: string;
+  title: string;
+  description: string;
+  priority: "low" | "medium" | "high";
+  assignee: string;
+  dueDate: string;
+  tags: string[];
+}
+
+interface Column {
+  id: string;
+  title: string;
+  tasks: Task[];
+}
+
+interface ProjectKanbanProps {
+  projectName: string;
+  columns: Column[];
+}
+
+export default function ProjectKanban({ projectName, columns: initialColumns }: ProjectKanbanProps) {
+  const [columns, setColumns] = useState(initialColumns);
+
+  const getPriorityColor = (priority: string) => {
+    switch (priority) {
+      case "high": return "destructive";
+      case "medium": return "secondary";
+      case "low": return "outline";
+      default: return "outline";
+    }
+  };
+
+  const handleTaskClick = (taskId: string) => {
+    console.log(`Task ${taskId} clicked`);
+  };
+
+  return (
+    <div className="space-y-4" data-testid="kanban-board">
+      <div className="flex items-center justify-between">
+        <h2 className="text-2xl font-bold" data-testid="text-project-name">{projectName}</h2>
+        <Badge variant="outline">
+          {columns.reduce((total, col) => total + col.tasks.length, 0)} tasks
+        </Badge>
+      </div>
+      
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {columns.map((column) => (
+          <div key={column.id} className="space-y-3" data-testid={`column-${column.id}`}>
+            <div className="flex items-center justify-between">
+              <h3 className="font-semibold text-sm text-muted-foreground uppercase tracking-wide">
+                {column.title}
+              </h3>
+              <Badge variant="secondary" className="text-xs">
+                {column.tasks.length}
+              </Badge>
+            </div>
+            
+            <div className="space-y-2">
+              {column.tasks.map((task) => (
+                <Card 
+                  key={task.id} 
+                  className="cursor-pointer hover-elevate active-elevate-2" 
+                  onClick={() => handleTaskClick(task.id)}
+                  data-testid={`task-${task.id}`}
+                >
+                  <CardContent className="p-3">
+                    <div className="space-y-2">
+                      <div className="flex items-start justify-between">
+                        <h4 className="font-medium text-sm leading-tight">{task.title}</h4>
+                        <Badge variant={getPriorityColor(task.priority)} className="text-xs">
+                          {task.priority}
+                        </Badge>
+                      </div>
+                      
+                      {task.description && (
+                        <p className="text-xs text-muted-foreground line-clamp-2">
+                          {task.description}
+                        </p>
+                      )}
+                      
+                      {task.tags.length > 0 && (
+                        <div className="flex flex-wrap gap-1">
+                          {task.tags.map((tag, index) => (
+                            <Badge key={index} variant="outline" className="text-xs px-1 py-0">
+                              {tag}
+                            </Badge>
+                          ))}
+                        </div>
+                      )}
+                      
+                      <div className="flex items-center justify-between pt-1">
+                        <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                          <Calendar className="h-3 w-3" />
+                          {task.dueDate}
+                        </div>
+                        <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                          <User className="h-3 w-3" />
+                          {task.assignee}
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
