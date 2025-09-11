@@ -356,6 +356,7 @@
       0 4px 16px hsl(var(--foreground)/0.02),
       inset 0 1px 0 hsl(var(--foreground)/0.02);
     transition: all 0.2s ease;
+    position: relative;
   }
 
   .neo-kanban-card:hover {
@@ -363,5 +364,71 @@
       0 8px 24px hsl(var(--foreground)/0.04),
       inset 0 1px 0 hsl(var(--foreground)/0.04);
     transform: translateY(-1px);
+  }
+
+  /* Ensure dragging cards have proper z-index */
+  .neo-kanban-card.shadow-lg {
+    box-shadow: 
+      0 20px 40px hsl(var(--foreground)/0.15),
+      inset 0 1px 0 hsl(var(--foreground)/0.05);
+    transform: rotate(2deg) scale(1.05);
+  }
+
+  /* Mobile responsive improvements */
+  @media (max-width: 768px) {
+    /* Make grid layouts single column on mobile */
+    .grid {
+      grid-template-columns: 1fr !important;
+      gap: 1rem !important;
+    }
+    
+    /* Override grid column specifications for mobile */
+    .md\\:grid-cols-2,
+    .md\\:grid-cols-3,
+    .md\\:grid-cols-4,
+    .lg\\:grid-cols-2,
+    .lg\\:grid-cols-3,
+    .lg\\:grid-cols-4 {
+      grid-template-columns: 1fr !important;
+    }
+    
+    /* Kanban boards in mobile should stack vertically */
+    .neo-kanban-mobile {
+      grid-template-columns: 1fr !important;
+    }
+    
+    /* Reduce padding on mobile */
+    .p-6 {
+      padding: 1rem !important;
+    }
+    
+    .p-4 {
+      padding: 0.75rem !important;
+    }
+    
+    /* Improve text sizing on mobile */
+    .text-3xl {
+      font-size: 1.875rem !important;
+    }
+    
+    .text-lg {
+      font-size: 1rem !important;
+    }
+    
+    /* Hide resize handle on mobile */
+    .w-2 {
+      display: none !important;
+    }
+    
+    /* Optimize neo-widgets for mobile */
+    .neo-card,
+    .neo-chart,
+    .neo-kanban-card {
+      background: linear-gradient(145deg, hsl(var(--card)/0.95), hsl(var(--card)/0.85));
+      backdrop-filter: blur(5px);
+      box-shadow: 
+        0 4px 16px hsl(var(--foreground)/0.02),
+        inset 0 1px 0 hsl(var(--foreground)/0.02);
+    }
   }
 }

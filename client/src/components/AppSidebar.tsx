@@ -19,7 +19,7 @@ import {
   LogOut,
   TrendingUp
 } from "lucide-react";
-import { useLocation } from "wouter";
+import { useLocation, Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
@@ -64,7 +64,6 @@ export default function AppSidebar() {
 
   const handleNavigation = (url: string) => {
     console.log(`Navigating to ${url}`);
-    // TODO: Add actual navigation when implementing routing
   };
 
   const handleLogout = () => {
@@ -98,13 +97,14 @@ export default function AppSidebar() {
                     isActive={location === item.url}
                     data-testid={`link-${item.title.toLowerCase()}`}
                   >
-                    <button 
+                    <Link 
+                      href={item.url}
                       onClick={() => handleNavigation(item.url)}
                       className="w-full"
                     >
                       <item.icon className="h-4 w-4" />
                       <span>{item.title}</span>
-                    </button>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
@@ -123,13 +123,14 @@ export default function AppSidebar() {
                     isActive={location === item.url}
                     data-testid={`link-${item.title.toLowerCase()}`}
                   >
-                    <button 
+                    <Link 
+                      href={item.url}
                       onClick={() => handleNavigation(item.url)}
                       className="w-full"
                     >
                       <item.icon className="h-4 w-4" />
                       <span>{item.title}</span>
-                    </button>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
