@@ -172,7 +172,7 @@ export default function Finances() {
         <div className="lg:col-span-2">
           <FinancialChart
             title="Monthly Income vs Expenses"
-            type="scatter"
+            type="dual-line"
             showTimeFilter={true}
             data={monthlyRevenue}
             height={350}

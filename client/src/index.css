@@ -376,10 +376,21 @@
 
   /* Mobile responsive improvements */
   @media (max-width: 768px) {
+    /* Prevent horizontal scrolling */
+    body, html {
+      overflow-x: hidden !important;
+      max-width: 100vw !important;
+    }
+    
+    * {
+      max-width: 100% !important;
+      box-sizing: border-box !important;
+    }
+    
     /* Make grid layouts single column on mobile */
     .grid {
       grid-template-columns: 1fr !important;
-      gap: 1rem !important;
+      gap: 0.75rem !important;
     }
     
     /* Override grid column specifications for mobile */
@@ -388,7 +399,10 @@
     .md\\:grid-cols-4,
     .lg\\:grid-cols-2,
     .lg\\:grid-cols-3,
-    .lg\\:grid-cols-4 {
+    .lg\\:grid-cols-4,
+    .grid-cols-2,
+    .grid-cols-3,
+    .grid-cols-4 {
       grid-template-columns: 1fr !important;
     }
     
@@ -397,18 +411,54 @@
       grid-template-columns: 1fr !important;
     }
     
+    /* Force containers to full width */
+    .container,
+    .max-w-7xl,
+    .max-w-6xl,
+    .max-w-5xl,
+    .max-w-4xl {
+      max-width: 100% !important;
+      padding-left: 0.5rem !important;
+      padding-right: 0.5rem !important;
+    }
+    
     /* Reduce padding on mobile */
     .p-6 {
-      padding: 1rem !important;
+      padding: 0.75rem !important;
     }
     
     .p-4 {
-      padding: 0.75rem !important;
+      padding: 0.5rem !important;
+    }
+    
+    .p-3 {
+      padding: 0.5rem !important;
+    }
+    
+    /* Reduce gaps on mobile */
+    .gap-6 {
+      gap: 0.75rem !important;
+    }
+    
+    .gap-4 {
+      gap: 0.5rem !important;
+    }
+    
+    .gap-3 {
+      gap: 0.5rem !important;
     }
     
     /* Improve text sizing on mobile */
     .text-3xl {
-      font-size: 1.875rem !important;
+      font-size: 1.5rem !important;
+    }
+    
+    .text-2xl {
+      font-size: 1.25rem !important;
+    }
+    
+    .text-xl {
+      font-size: 1.125rem !important;
     }
     
     .text-lg {
@@ -420,15 +470,41 @@
       display: none !important;
     }
     
-    /* Optimize neo-widgets for mobile */
+    /* Make cards and widgets smaller on mobile */
     .neo-card,
     .neo-chart,
+    .neo-widget {
+      padding: 0.5rem !important;
+      margin: 0 !important;
+      width: 100% !important;
+      background: linear-gradient(145deg, hsl(var(--card)/0.95), hsl(var(--card)/0.85));
+      backdrop-filter: blur(5px);
+      box-shadow: 
+        0 2px 8px hsl(var(--foreground)/0.02),
+        inset 0 1px 0 hsl(var(--foreground)/0.02);
+    }
+    
     .neo-kanban-card {
       background: linear-gradient(145deg, hsl(var(--card)/0.95), hsl(var(--card)/0.85));
       backdrop-filter: blur(5px);
       box-shadow: 
         0 4px 16px hsl(var(--foreground)/0.02),
         inset 0 1px 0 hsl(var(--foreground)/0.02);
+    }
+    
+    /* Ensure flex items don't exceed container */
+    .flex {
+      flex-wrap: wrap !important;
+    }
+    
+    /* Make tables responsive */
+    table {
+      font-size: 0.875rem !important;
+    }
+    
+    /* Hide less critical elements on mobile */
+    .hidden\\:sm {
+      display: none !important;
     }
   }
 }

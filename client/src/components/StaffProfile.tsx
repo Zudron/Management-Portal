@@ -30,61 +30,60 @@ export default function StaffProfile({
   const initials = name.split(' ').map(n => n[0]).join('').toUpperCase();
 
   return (
-    <Card className="w-full max-w-md" data-testid={`card-staff-${name.toLowerCase().replace(/\s+/g, '-')}`}>
-      <CardHeader className="text-center">
-        <div className="mx-auto mb-4">
-          <Avatar className="h-16 w-16">
+    <Card className="w-full max-w-sm neo-widget" data-testid={`card-staff-${name.toLowerCase().replace(/\s+/g, '-')}`}>
+      <CardHeader className="text-center pb-3">
+        <div className="mx-auto mb-2">
+          <Avatar className="h-12 w-12">
             <AvatarImage src={avatar} alt={name} />
-            <AvatarFallback className="text-lg">{initials}</AvatarFallback>
+            <AvatarFallback className="text-sm">{initials}</AvatarFallback>
           </Avatar>
         </div>
-        <CardTitle className="flex items-center justify-center gap-2">
+        <CardTitle className="flex items-center justify-center gap-2 text-base">
           {name}
-          {isManager && <Badge variant="secondary">Manager</Badge>}
+          {isManager && <Badge variant="secondary" className="text-xs">Manager</Badge>}
         </CardTitle>
-        <p className="text-muted-foreground">{role}</p>
-        <Badge variant="outline">{department}</Badge>
+        <p className="text-muted-foreground text-sm">{role}</p>
+        <Badge variant="outline" className="text-xs">{department}</Badge>
       </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="space-y-2">
-          <div className="flex items-center gap-2 text-sm">
-            <Mail className="h-4 w-4 text-muted-foreground" />
-            <span data-testid="text-email">{email}</span>
+      <CardContent className="space-y-3 pt-0">
+        <div className="space-y-1.5">
+          <div className="flex items-center gap-2 text-xs">
+            <Mail className="h-3 w-3 text-muted-foreground" />
+            <span data-testid="text-email" className="truncate">{email}</span>
           </div>
-          {phone && (
-            <div className="flex items-center gap-2 text-sm">
-              <Phone className="h-4 w-4 text-muted-foreground" />
-              <span data-testid="text-phone">{phone}</span>
-            </div>
-          )}
-          <div className="flex items-center gap-2 text-sm">
-            <Calendar className="h-4 w-4 text-muted-foreground" />
+          <div className="flex items-center gap-2 text-xs">
+            <Calendar className="h-3 w-3 text-muted-foreground" />
             <span data-testid="text-start-date">Started {startDate}</span>
           </div>
         </div>
         
         {projects.length > 0 && (
           <div>
-            <div className="flex items-center gap-2 mb-2">
-              <Briefcase className="h-4 w-4 text-muted-foreground" />
-              <span className="text-sm font-medium">Current Projects</span>
+            <div className="flex items-center gap-1 mb-1">
+              <Briefcase className="h-3 w-3 text-muted-foreground" />
+              <span className="text-xs font-medium">Projects</span>
             </div>
             <div className="flex flex-wrap gap-1">
-              {projects.map((project, index) => (
+              {projects.slice(0, 2).map((project, index) => (
                 <Badge key={index} variant="outline" className="text-xs">
                   {project}
                 </Badge>
               ))}
+              {projects.length > 2 && (
+                <Badge variant="outline" className="text-xs">
+                  +{projects.length - 2} more
+                </Badge>
+              )}
             </div>
           </div>
         )}
         
-        <div className="flex gap-2 pt-2">
-          <Button size="sm" variant="outline" className="flex-1" data-testid="button-edit-staff">
-            Edit Profile
+        <div className="flex gap-1 pt-1">
+          <Button size="sm" variant="outline" className="flex-1 text-xs h-7" data-testid="button-edit-staff">
+            Edit
           </Button>
-          <Button size="sm" variant="default" className="flex-1" data-testid="button-view-details">
-            View Details
+          <Button size="sm" variant="default" className="flex-1 text-xs h-7" data-testid="button-view-details">
+            Details
           </Button>
         </div>
       </CardContent>

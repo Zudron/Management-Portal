@@ -98,7 +98,7 @@ export default function Overview() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <FinancialChart
           title="Monthly Income vs Expenses"
-          type="scatter"
+          type="dual-line"
           data={monthlyData}
           height={300}
           showTimeFilter={true}

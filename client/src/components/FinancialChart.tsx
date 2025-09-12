@@ -14,7 +14,7 @@ interface ChartData {
 
 interface FinancialChartProps {
   title: string;
-  type: "bar" | "line" | "pie" | "scatter";
+  type: "bar" | "line" | "pie" | "dual-line";
   data: ChartData[];
   height?: number;
   dataKey?: string;
@@ -105,10 +105,10 @@ export default function FinancialChart({
           </ResponsiveContainer>
         );
       
-      case "scatter":
+      case "dual-line":
         return (
           <ResponsiveContainer width="100%" height={height}>
-            <ScatterChart data={data}>
+            <LineChart data={data}>
               <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
               <XAxis 
                 dataKey="name" 
@@ -124,9 +124,25 @@ export default function FinancialChart({
                 axisLine={false}
                 tickFormatter={(value) => formatINR(value)}
               />
-              <Scatter name="Income" dataKey="income" fill={colors[2]} />
-              <Scatter name="Expense" dataKey="expense" fill={colors[4]} />
-            </ScatterChart>
+              <Line 
+                type="monotone" 
+                dataKey="income" 
+                stroke={colors[2]} 
+                strokeWidth={3}
+                dot={{ fill: colors[2], strokeWidth: 2, r: 4 }}
+                activeDot={{ r: 6, stroke: colors[2], strokeWidth: 2 }}
+                name="Income"
+              />
+              <Line 
+                type="monotone" 
+                dataKey="expense" 
+                stroke={colors[4]} 
+                strokeWidth={3}
+                dot={{ fill: colors[4], strokeWidth: 2, r: 4 }}
+                activeDot={{ r: 6, stroke: colors[4], strokeWidth: 2 }}
+                name="Expense"
+              />
+            </LineChart>
           </ResponsiveContainer>
         );
       
@@ -196,7 +212,7 @@ export default function FinancialChart({
             ))}
           </div>
         )}
-        {type === "scatter" && (
+        {type === "dual-line" && (
           <div className="mt-4 flex justify-center gap-6">
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 rounded-full" style={{ backgroundColor: colors[2] }} />
