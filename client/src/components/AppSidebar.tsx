@@ -20,6 +20,7 @@ import {
   TrendingUp
 } from "lucide-react";
 import { useLocation, Link } from "wouter";
+import { useSidebar } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
@@ -61,9 +62,14 @@ const secondaryItems = [
 
 export default function AppSidebar() {
   const [location] = useLocation();
+  const { isMobile, setOpenMobile } = useSidebar();
 
   const handleNavigation = (url: string) => {
     console.log(`Navigating to ${url}`);
+    // Auto-close sidebar on mobile when navigating
+    if (isMobile) {
+      setOpenMobile(false);
+    }
   };
 
   const handleLogout = () => {

@@ -4,7 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Briefcase, Plus, Calendar, Users, Clock, Target } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
+import { Briefcase, Plus, Calendar, Users, Clock, Target, List } from "lucide-react";
+import { useState } from "react";
 
 export default function Projects() {
   // Mock project data
@@ -147,9 +149,45 @@ export default function Projects() {
     console.log("Add new project clicked");
   };
 
+  const [viewMode, setViewMode] = useState<"overview" | "timeline">("overview");
+
   const handleViewTimeline = () => {
     console.log("View timeline clicked");
+    setViewMode(viewMode === "timeline" ? "overview" : "timeline");
   };
+
+  const formatINR = (amount: number) => {
+    return new Intl.NumberFormat('en-IN', {
+      style: 'currency',
+      currency: 'INR',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(amount);
+  };
+
+  // Gantt chart timeline calculation
+  const getTimelineData = () => {
+    const parseDate = (dateStr: string) => new Date(dateStr + ", 2024");
+    const allDates = projects.flatMap(p => [parseDate(p.startDate), parseDate(p.endDate)]);
+    const minDate = new Date(Math.min(...allDates.map(d => d.getTime())));
+    const maxDate = new Date(Math.max(...allDates.map(d => d.getTime())));
+    const totalDays = (maxDate.getTime() - minDate.getTime()) / (1000 * 60 * 60 * 24);
+
+    return projects.map(project => {
+      const start = parseDate(project.startDate);
+      const end = parseDate(project.endDate);
+      const startOffset = ((start.getTime() - minDate.getTime()) / (1000 * 60 * 60 * 24)) / totalDays * 100;
+      const duration = ((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)) / totalDays * 100;
+      
+      return {
+        ...project,
+        startOffset,
+        width: duration
+      };
+    });
+  };
+
+  const timelineProjects = getTimelineData();
 
   return (
     <div className="space-y-6" data-testid="page-projects">
@@ -160,9 +198,13 @@ export default function Projects() {
           <p className="text-muted-foreground">Track projects, tasks, and team progress</p>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" onClick={handleViewTimeline} data-testid="button-timeline">
-            <Calendar className="h-4 w-4 mr-2" />
-            Timeline View
+          <Button 
+            variant={viewMode === "timeline" ? "default" : "outline"} 
+            onClick={handleViewTimeline} 
+            data-testid="button-timeline"
+          >
+            {viewMode === "timeline" ? <List className="h-4 w-4 mr-2" /> : <Calendar className="h-4 w-4 mr-2" />}
+            {viewMode === "timeline" ? "Project Overview" : "Timeline View"}
           </Button>
           <Button onClick={handleAddProject} data-testid="button-add-project">
             <Plus className="h-4 w-4 mr-2" />
@@ -204,85 +246,130 @@ export default function Projects() {
       </div>
 
       {/* Project Views */}
-      <Tabs defaultValue="overview" className="space-y-4">
-        <TabsList>
-          <TabsTrigger value="overview" data-testid="tab-overview">Project Overview</TabsTrigger>
-          <TabsTrigger value="kanban" data-testid="tab-kanban">Kanban Board</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="overview" className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {projects.map((project) => (
-              <Card key={project.id} className="hover-elevate cursor-pointer" data-testid={`project-${project.id}`}>
-                <CardHeader>
-                  <div className="flex items-start justify-between">
-                    <div className="space-y-1">
-                      <CardTitle className="text-lg">{project.name}</CardTitle>
-                      <p className="text-sm text-muted-foreground">{project.description}</p>
+      {viewMode === "timeline" ? (
+        <Card className="neo-chart" data-testid="timeline-view">
+          <CardHeader>
+            <CardTitle>Project Timeline</CardTitle>
+            <p className="text-sm text-muted-foreground">Gantt-style view of all projects</p>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {/* Timeline Header */}
+              <div className="grid grid-cols-12 gap-1 text-xs text-muted-foreground border-b pb-2">
+                <div className="col-span-2">Aug 2024</div>
+                <div className="col-span-2">Sep 2024</div>
+                <div className="col-span-2">Oct 2024</div>
+                <div className="col-span-2">Nov 2024</div>
+                <div className="col-span-2">Dec 2024</div>
+                <div className="col-span-2">Jan 2025</div>
+              </div>
+              
+              {/* Project Gantt Bars */}
+              <div className="space-y-3">
+                {timelineProjects.map((project) => (
+                  <div key={project.id} className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <div className="flex-1 min-w-0">
+                        <h4 className="font-medium text-sm truncate">{project.name}</h4>
+                        <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                          <Badge variant={getStatusColor(project.status)} className="text-xs">
+                            {project.status}
+                          </Badge>
+                          <span>{project.startDate} → {project.endDate}</span>
+                          <span>{project.progress}%</span>
+                        </div>
+                      </div>
+                      <div className="text-right text-xs">
+                        <div className="font-medium">{formatINR(project.spent)} / {formatINR(project.budget)}</div>
+                        <div className="text-muted-foreground">{project.teamSize} members</div>
+                      </div>
                     </div>
-                    <Badge variant={getStatusColor(project.status)}>
-                      {project.status}
-                    </Badge>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  {/* Progress Bar */}
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between text-sm">
-                      <span>Progress</span>
-                      <span>{project.progress}%</span>
-                    </div>
-                    <div className="w-full bg-muted rounded-full h-2">
+                    
+                    {/* Gantt Bar */}
+                    <div className="relative h-6 bg-muted/30 rounded">
                       <div 
-                        className="bg-primary h-2 rounded-full transition-all duration-300"
-                        style={{ width: `${project.progress}%` }}
-                      />
+                        className="absolute h-full bg-primary/20 rounded flex items-center px-1"
+                        style={{ 
+                          left: `${project.startOffset}%`, 
+                          width: `${project.width}%` 
+                        }}
+                      >
+                        <div 
+                          className="h-full bg-primary rounded flex items-center justify-center text-xs text-primary-foreground font-medium"
+                          style={{ width: `${project.progress}%` }}
+                        >
+                          {project.width > 15 && <span className="truncate px-1">{project.name}</span>}
+                        </div>
+                      </div>
                     </div>
                   </div>
+                ))}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      ) : (
+        <Tabs defaultValue="overview" className="space-y-4">
+          <TabsList>
+            <TabsTrigger value="overview" data-testid="tab-overview">Project Overview</TabsTrigger>
+            <TabsTrigger value="kanban" data-testid="tab-kanban">Kanban Board</TabsTrigger>
+          </TabsList>
 
-                  {/* Project Info */}
-                  <div className="grid grid-cols-2 gap-4 text-sm">
-                    <div className="space-y-1">
-                      <div className="flex items-center gap-1 text-muted-foreground">
-                        <Target className="h-3 w-3" />
-                        Budget
+          <TabsContent value="overview" className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {projects.map((project) => (
+                <Card key={project.id} className="hover-elevate cursor-pointer neo-widget" data-testid={`project-${project.id}`}>
+                  <CardHeader className="pb-3">
+                    <div className="flex items-start justify-between">
+                      <div className="space-y-1">
+                        <CardTitle className="text-base">{project.name}</CardTitle>
+                        <p className="text-xs text-muted-foreground line-clamp-2">{project.description}</p>
                       </div>
-                      <div className="font-medium">
-                        ${project.spent.toLocaleString()} / ${project.budget.toLocaleString()}
-                      </div>
+                      <Badge variant={getStatusColor(project.status)} className="text-xs">
+                        {project.status}
+                      </Badge>
                     </div>
+                  </CardHeader>
+                  <CardContent className="space-y-3 pt-0">
+                    {/* Progress Bar */}
                     <div className="space-y-1">
-                      <div className="flex items-center gap-1 text-muted-foreground">
-                        <Users className="h-3 w-3" />
-                        Team
+                      <div className="flex items-center justify-between text-xs">
+                        <span>Progress</span>
+                        <span>{project.progress}%</span>
                       </div>
-                      <div className="font-medium">{project.teamSize} members</div>
+                      <Progress value={project.progress} className="h-1.5" />
                     </div>
-                    <div className="space-y-1">
-                      <div className="flex items-center gap-1 text-muted-foreground">
-                        <Calendar className="h-3 w-3" />
-                        Start
-                      </div>
-                      <div className="font-medium">{project.startDate}</div>
-                    </div>
-                    <div className="space-y-1">
-                      <div className="flex items-center gap-1 text-muted-foreground">
-                        <Calendar className="h-3 w-3" />
-                        End
-                      </div>
-                      <div className="font-medium">{project.endDate}</div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </TabsContent>
 
-        <TabsContent value="kanban">
-          <ProjectKanban {...kanbanData} />
-        </TabsContent>
-      </Tabs>
+                    {/* Project Info */}
+                    <div className="grid grid-cols-2 gap-3 text-xs">
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-1 text-muted-foreground">
+                          <Target className="h-3 w-3" />
+                          Budget
+                        </div>
+                        <div className="font-medium text-xs">
+                          {formatINR(project.spent)} / {formatINR(project.budget)}
+                        </div>
+                      </div>
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-1 text-muted-foreground">
+                          <Users className="h-3 w-3" />
+                          Team
+                        </div>
+                        <div className="font-medium">{project.teamSize} members</div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="kanban">
+            <ProjectKanban {...kanbanData} />
+          </TabsContent>
+        </Tabs>
+      )}
     </div>
   );
 }

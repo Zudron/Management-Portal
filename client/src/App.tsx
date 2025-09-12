@@ -38,37 +38,37 @@ export default function App() {
         <SidebarProvider style={style as React.CSSProperties}>
           <div className="h-screen w-full bg-background">
             {/* Desktop Layout with ResizableSidebar */}
-            <div className="hidden md:block h-full">
+            <div className="hidden md:block h-full w-full">
               <ResizableSidebar
                 sidebar={<AppSidebar />}
               >
-                <div className="flex flex-col h-full">
-                  <header className="flex items-center justify-between p-4 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+                <div className="flex flex-col h-full w-full">
+                  <header className="flex items-center justify-between p-3 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
                     <div className="flex items-center gap-4">
                       <h1 className="text-lg font-semibold">OrgVision Dashboard</h1>
                     </div>
                     <ThemeToggle />
                   </header>
                   
-                  <div className="p-4 border-b">
+                  <div className="p-3 border-b">
                     <BudgetTracker />
                   </div>
                   
-                  <main className="flex-1 overflow-auto p-6">
+                  <main className="flex-1 overflow-auto p-4">
                     <Router />
                   </main>
                 </div>
               </ResizableSidebar>
             </div>
 
-            {/* Mobile Layout with Standard Sidebar */}
+            {/* Mobile Layout with Collapsible Sidebar */}
             <div className="md:hidden flex h-full w-full">
               <AppSidebar />
-              <div className="flex flex-col flex-1">
-                <header className="flex items-center justify-between p-4 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-                  <div className="flex items-center gap-4">
+              <div className="flex flex-col flex-1 min-w-0">
+                <header className="flex items-center justify-between p-3 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+                  <div className="flex items-center gap-2">
                     <SidebarTrigger data-testid="button-sidebar-toggle" />
-                    <h1 className="text-lg font-semibold">OrgVision Dashboard</h1>
+                    <h1 className="text-sm font-semibold truncate">OrgVision Dashboard</h1>
                   </div>
                   <ThemeToggle />
                 </header>
@@ -77,7 +77,7 @@ export default function App() {
                   <BudgetTracker />
                 </div>
                 
-                <main className="flex-1 overflow-auto p-4">
+                <main className="flex-1 overflow-auto p-3">
                   <Router />
                 </main>
               </div>
