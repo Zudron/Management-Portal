@@ -62,7 +62,18 @@ const secondaryItems = [
 
 export default function AppSidebar() {
   const [location] = useLocation();
-  const { isMobile, setOpenMobile } = useSidebar();
+
+  // Safely use sidebar context
+  let isMobile = false;
+  let setOpenMobile = () => {};
+  
+  try {
+    const sidebarContext = useSidebar();
+    isMobile = sidebarContext.isMobile;
+    setOpenMobile = sidebarContext.setOpenMobile;
+  } catch (error) {
+    // SidebarProvider not available, use defaults
+  }
 
   const handleNavigation = (url: string) => {
     console.log(`Navigating to ${url}`);

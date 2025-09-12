@@ -42,7 +42,7 @@ export default function App() {
               <ResizableSidebar
                 sidebar={<AppSidebar />}
               >
-                <div className="flex flex-col h-full w-full">
+                <div className="flex flex-col h-full w-full min-w-0">
                   <header className="flex items-center justify-between p-3 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
                     <div className="flex items-center gap-4">
                       <h1 className="text-lg font-semibold">OrgVision Dashboard</h1>
@@ -54,7 +54,7 @@ export default function App() {
                     <BudgetTracker />
                   </div>
                   
-                  <main className="flex-1 overflow-auto p-4">
+                  <main className="flex-1 overflow-auto p-4 min-w-0">
                     <Router />
                   </main>
                 </div>
@@ -77,7 +77,7 @@ export default function App() {
                   <BudgetTracker />
                 </div>
                 
-                <main className="flex-1 overflow-auto p-3">
+                <main className="flex-1 overflow-auto p-3 min-w-0">
                   <Router />
                 </main>
               </div>
