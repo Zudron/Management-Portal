@@ -1,6 +1,6 @@
 <div align="center">
   <br />
-  <h1 align="center">🚀 OrgVision Dashboard</h1>
+  <h1 align="center">OrgVision Dashboard</h1>
   <p align="center">
     A unified command center for your organization's finances, staff, and projects.
     <br />
@@ -39,33 +39,33 @@ From tracking inflows and outflows to managing staff profiles and visualizing pr
 
 ---
 
-## ✨ Core Features
+## Core Features
 
-*   **💰 Financial Tracking:** Full CRUD on financial transactions, account management, and data visualization with rich charts to monitor your organization's health.
-*   **👥 Staff Management:** A comprehensive staff directory, profile management, and project assignments. Visualize team structure with network and hierarchy graphs.
-*   **📋 Project Oversight:** Plan, track, and manage projects with interactive Kanban boards. Utilize drag-and-drop functionality for tasks and stay on top of deadlines.
-*   **🎨 Futuristic UI/UX:** A stunning interface built with a custom design system. Features include **dark/light theme support**, glassmorphism effects, strategic gradients, and a fully responsive, mobile-first layout.
-*   **⚡ Blazing Fast Performance:** Built with Vite and a serverless backend, the dashboard is optimized for speed. Server state management with React Query ensures a snappy, cached-first experience.
-*   **🔒 Type-Safe from End to End:** With TypeScript, Drizzle ORM, and Zod validation, the entire application is built on a foundation of type safety, reducing bugs and improving developer experience.
+*   **Financial Tracking:** Full CRUD on financial transactions, account management, and data visualization with rich charts to monitor your organization's health.
+*   **Staff Management:** A comprehensive staff directory, profile management, and project assignments. Visualize team structure with network and hierarchy graphs.
+*   **Project Oversight:** Plan, track, and manage projects with interactive Kanban boards. Utilize drag-and-drop functionality for tasks and stay on top of deadlines.
+*   **Modern UI/UX:** A stunning interface built with a custom design system. Features include **dark/light theme support**, glassmorphism effects, strategic gradients, and a fully responsive, mobile-first layout.
+*   **Blazing Fast Performance:** Built with Vite and a serverless backend, the dashboard is optimized for speed. Server state management with React Query ensures a snappy, cached-first experience.
+*   **Type-Safe from End to End:** With TypeScript, Drizzle ORM, and Zod validation, the entire application is built on a foundation of type safety, reducing bugs and improving developer experience.
 
 ---
 
-## 🛠️ Built With
+## Built With
 
 This project leverages a powerful and modern technology stack to deliver a top-tier user experience and a robust backend infrastructure.
 
 | Category                | Technologies                                                                                                 |
 | ----------------------- | ------------------------------------------------------------------------------------------------------------ |
-| 🌐 **Core Frameworks**  | `React 18`, `Express.js`, `TypeScript`, `Vite`                                                               |
-| 🗃️ **Database & ORM**   | `PostgreSQL` (via `Neon`), `Drizzle ORM`, `Zod`, `Drizzle Kit`                                                 |
-| 🎨 **UI & Styling**     | `shadcn/ui`, `Tailwind CSS`, `Radix UI`, `Lucide Icons`, `CVA`                                                 |
-| 📊 **Data & State**     | `TanStack Query` (React Query), `Recharts`, `react-beautiful-dnd`                                            |
-| ⚙️ **Backend & API**    | `ESM`, `RESTful API`, `connect-pg-simple` for sessions                                                       |
-| 🚀 **Deployment & Dev** | `Replit`, `Neon Serverless`, `ESBuild`, `PostCSS`                                                            |
+|  **Core Frameworks**  | `React 18`, `Express.js`, `TypeScript`, `Vite`                                                               |
+|  **Database & ORM**   | `PostgreSQL` (via `Neon`), `Drizzle ORM`, `Zod`, `Drizzle Kit`                                                 |
+|  **UI & Styling**     | `shadcn/ui`, `Tailwind CSS`, `Radix UI`, `Lucide Icons`, `CVA`                                                 |
+|  **Data & State**     | `TanStack Query` (React Query), `Recharts`, `react-beautiful-dnd`                                            |
+|  **Backend & API**    | `ESM`, `RESTful API`, `connect-pg-simple` for sessions                                                       |
+|  **Deployment & Dev** | `Replit`, `Neon Serverless`, `ESBuild`, `PostCSS`                                                            |
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 To get a local copy up and running, follow these simple steps.
 
@@ -154,6 +154,6 @@ Don't forget to give the project a star! Thanks again!
 
 ---
 
-## 📜 License
+## License
 
 Distributed under the MIT License. See `LICENSE.txt` for more information.
