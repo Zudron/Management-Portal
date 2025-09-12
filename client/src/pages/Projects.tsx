@@ -167,27 +167,48 @@ export default function Projects() {
 
   // Gantt chart timeline calculation
   const getTimelineData = () => {
-    const parseDate = (dateStr: string) => new Date(dateStr + ", 2024");
+    const parseDate = (dateStr: string) => new Date(dateStr);
     const allDates = projects.flatMap(p => [parseDate(p.startDate), parseDate(p.endDate)]);
-    const minDate = new Date(Math.min(...allDates.map(d => d.getTime())));
-    const maxDate = new Date(Math.max(...allDates.map(d => d.getTime())));
+    const validDates = allDates.filter(d => !isNaN(d.getTime()));
+    
+    if (validDates.length === 0) return { projects: [], months: [] };
+    
+    const minDate = new Date(Math.min(...validDates.map(d => d.getTime())));
+    const maxDate = new Date(Math.max(...validDates.map(d => d.getTime())));
     const totalDays = (maxDate.getTime() - minDate.getTime()) / (1000 * 60 * 60 * 24);
 
-    return projects.map(project => {
+    // Generate month headers dynamically
+    const months = [];
+    const current = new Date(minDate.getFullYear(), minDate.getMonth(), 1);
+    const end = new Date(maxDate.getFullYear(), maxDate.getMonth() + 1, 1);
+    
+    while (current < end) {
+      months.push(current.toLocaleDateString('en-US', { month: 'short', year: 'numeric' }));
+      current.setMonth(current.getMonth() + 1);
+    }
+
+    const projectsWithTimeline = projects.map(project => {
       const start = parseDate(project.startDate);
       const end = parseDate(project.endDate);
-      const startOffset = ((start.getTime() - minDate.getTime()) / (1000 * 60 * 60 * 24)) / totalDays * 100;
-      const duration = ((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)) / totalDays * 100;
+      
+      if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+        return { ...project, startOffset: 0, width: 0 };
+      }
+      
+      const startOffset = Math.max(0, ((start.getTime() - minDate.getTime()) / (1000 * 60 * 60 * 24)) / totalDays * 100);
+      const duration = Math.max(1, ((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)) / totalDays * 100);
       
       return {
         ...project,
-        startOffset,
-        width: duration
+        startOffset: Math.min(startOffset, 100),
+        width: Math.min(duration, 100 - startOffset)
       };
     });
+
+    return { projects: projectsWithTimeline, months };
   };
 
-  const timelineProjects = getTimelineData();
+  const { projects: timelineProjects, months: timelineMonths } = getTimelineData();
 
   return (
     <div className="space-y-6" data-testid="page-projects">
@@ -255,13 +276,20 @@ export default function Projects() {
           <CardContent>
             <div className="space-y-4">
               {/* Timeline Header */}
-              <div className="grid grid-cols-12 gap-1 text-xs text-muted-foreground border-b pb-2">
-                <div className="col-span-2">Aug 2024</div>
-                <div className="col-span-2">Sep 2024</div>
-                <div className="col-span-2">Oct 2024</div>
-                <div className="col-span-2">Nov 2024</div>
-                <div className="col-span-2">Dec 2024</div>
-                <div className="col-span-2">Jan 2025</div>
+              <div className="relative border-b pb-2">
+                <div className="flex justify-between text-xs text-muted-foreground">
+                  {timelineMonths.map((month, index) => (
+                    <div key={index} className="text-center">
+                      {month}
+                    </div>
+                  ))}
+                </div>
+                {/* Grid lines */}
+                <div className="absolute inset-x-0 bottom-0 flex">
+                  {timelineMonths.map((_, index) => (
+                    <div key={index} className="flex-1 border-r border-muted/30 last:border-r-0" />
+                  ))}
+                </div>
               </div>
               
               {/* Project Gantt Bars */}
@@ -286,14 +314,24 @@ export default function Projects() {
                     </div>
                     
                     {/* Gantt Bar */}
-                    <div className="relative h-6 bg-muted/30 rounded">
+                    <div className="relative h-6 bg-muted/30 rounded overflow-hidden">
+                      {/* Month grid background */}
+                      <div className="absolute inset-0 flex">
+                        {timelineMonths.map((_, index) => (
+                          <div key={index} className="flex-1 border-r border-muted/20 last:border-r-0" />
+                        ))}
+                      </div>
+                      
+                      {/* Project duration bar */}
                       <div 
-                        className="absolute h-full bg-primary/20 rounded flex items-center px-1"
+                        className="absolute h-full bg-primary/20 rounded flex items-center"
                         style={{ 
                           left: `${project.startOffset}%`, 
                           width: `${project.width}%` 
                         }}
+                        data-testid={`gantt-bar-${project.id}`}
                       >
+                        {/* Progress within duration */}
                         <div 
                           className="h-full bg-primary rounded flex items-center justify-center text-xs text-primary-foreground font-medium"
                           style={{ width: `${project.progress}%` }}
