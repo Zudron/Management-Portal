@@ -4,14 +4,14 @@
   <p align="center">
     A unified command center for your organization's finances, staff, and projects.
     <br />
-    <a href="#"><strong>Explore the Docs »</strong></a>
+<!--     <a href="#"><strong>Explore the Docs »</strong></a>
     <br />
     <br />
     <a href="#">View Demo</a>
     ·
     <a href="#">Report Bug</a>
     ·
-    <a href="#">Request Feature</a>
+    <a href="#">Request Feature</a> -->
   </p>
 </div>
 
@@ -27,9 +27,6 @@
 ---
 
 ## About The Project
-
-![OrgVision Screenshot](https://user-images.githubusercontent.com/1528273/108024221-33438a00-700e-11eb-80a2-978051a37887.png)
-*(Replace this with a screenshot of your application)*
 
 OrgVision is a sleek, modern dashboard designed to provide a single source of truth for organizational management. Built for a single administrator, it seamlessly integrates modules for **Finances**, **Human Resources**, and **Projects** into one cohesive experience.
 
